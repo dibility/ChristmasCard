@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>크리스마스 카드 </title>
+    <style>
+        :root {
+            --christmas-red: #D42426;
+            --christmas-green: #165B33;
+            --snow-white: #fff;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f8f8;
+            background-image: url('{{ url_for("static", filename="images/snowflake-bg.png") }}');
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: var(--christmas-red);
+            margin-bottom: 30px;
+        }
+
+        .write-button {
+            display: inline-block;
+            background-color: var(--christmas-green);
+            color: var(--snow-white);
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin: 20px 0;
+            transition: background-color 0.3s;
+        }
+
+        .write-button:hover {
+            background-color: #0f4526;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: var(--snow-white);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--christmas-green);  /* 여기를 초록색으로 변경 */
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .card-author {
+            color: var(--christmas-green);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .card-message {
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .card-date {
+            color: #666;
+            font-size: 0.8em;
+            margin-top: 10px;
+        }
+
+        .festive-border {
+            border: 2px solid var(--christmas-green);  /* 여기를 초록색으로 변경 */
+            border-radius: 15px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎄 크리스마스 카드 모음 🎄</h1>
+        <a href="{{ url_for('write_form') }}" class="write-button">새 카드 작성하기 ✉️</a>
+    </div>
+
+    <div class="cards-container">
+        {% for card in cards %}
+        <div class="card">
+            {% if card.image_path %}
+            <img src="{{ url_for('static', filename=card.image_path) }}" alt="카드 이미지">
+            {% endif %}
+            <div class="card-author">From: {{ card.author }}</div>
+            <div class="card-message">{{ card.message }}</div>
+            <div class="card-date">{{ card.created_at.strftime('%Y-%m-%d %H:%M') }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+
+Version 2 of 2
