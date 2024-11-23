@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 
@@ -24,7 +25,14 @@ class ChristmasCard(db.Model):
     author = db.Column(db.String(100), nullable=False)
     message = db.Column(db.Text, nullable=False)
     image_path = db.Column(db.String(200))
+    password_hash = db.Column(db.String(200), nullable=False)  # 비밀번호 해시 추가
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
 # 데이터베이스 초기화 함수
 def init_db():
@@ -45,6 +53,7 @@ def write_form():
 def write():
     author = request.form['author']
     message = request.form['message']
+    password = request.form['password']  # 비밀번호 받기
     image = request.files['image']
     
     image_path = ''
@@ -60,6 +69,7 @@ def write():
         message=message,
         image_path=image_path
     )
+    new_card.set_password(password)  # 비밀번호 설정
     
     db.session.add(new_card)
     db.session.commit()
@@ -67,6 +77,5 @@ def write():
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    # 서버 실행 전에 데이터베이스 초기화
     init_db()
     app.run(debug=True)

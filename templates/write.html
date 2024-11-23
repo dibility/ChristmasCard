@@ -30,7 +30,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             max-width: 600px;
             width: 100%;
-            border: 3px solid var(--christmas-red);
+            border: 3px solid var(--christmas-green);
         }
 
         h1 {
@@ -51,12 +51,19 @@
         }
 
         input[type="text"],
+        input[type="password"],
         textarea {
             width: 100%;
             padding: 10px;
             border: 2px solid var(--christmas-green);
             border-radius: 5px;
             font-size: 16px;
+        }
+
+        .password-info {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 5px;
         }
 
         textarea {
@@ -106,6 +113,12 @@
             <div class="form-group">
                 <label for="author">작성자</label>
                 <input type="text" id="author" name="author" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" name="password" required>
+                <p class="password-info">※ 나중에 카드를 수정하거나 삭제할 때 필요합니다</p>
             </div>
 
             <div class="form-group">
