@@ -36,9 +36,7 @@ class ChristmasCard(db.Model):
 
 # 데이터베이스 초기화 함수
 def init_db():
-    with app.app_context():
-        db.create_all()
-        print("Database initialized!")
+    print("Database initialized!")
 
 @app.route('/')
 def index():
