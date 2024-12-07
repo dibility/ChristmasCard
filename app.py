@@ -9,6 +9,7 @@ app = Flask(__name__)
 # 프로젝트 루트 디렉토리 설정
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+
 # 데이터베이스 설정
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'christmas_cards.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
