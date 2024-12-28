@@ -2,6 +2,5 @@ venv/
 *.pyc
 __pycache__/
 instance/
-christmas_cards.db
 static/uploads/*
 !static/uploads/.gitkeep
