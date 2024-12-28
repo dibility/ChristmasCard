@@ -14,7 +14,11 @@
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f8f8f8;
-            background-image: url('{{ url_for("static", filename="images/snowflake-bg.png") }}');
+            background-image: url('{{ url_for("static", filename="images/background.jpg") }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -118,7 +122,7 @@
             <div class="form-group">
                 <label for="password">비밀번호</label>
                 <input type="password" id="password" name="password" required>
-                <p class="password-info">※ 나중에 카드를 수정하거나 삭제할 때 필요합니다</p>
+                <p class="password-info">※ 나중에 카드를 삭제할 때 필요합니다</p>
             </div>
 
             <div class="form-group">

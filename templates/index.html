@@ -15,7 +15,11 @@
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f8f8f8;
-            background-image: url('{{ url_for("static", filename="images/snowflake-bg.png") }}');
+            background-image: url('{{ url_for("static", filename="images/baegeong.jpg") }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             margin: 0;
             padding: 20px;
         }
@@ -49,11 +53,47 @@
         }
 
         .card {
+            position: relative;
             background-color: var(--snow-white);
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border: 2px solid var(--christmas-green);  /* 여기를 초록색으로 변경 */
+            border: 2px solid var(--christmas-green);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .card-buttons {
+            margin-top: 15px;
+            display: flex;
+            justify-content: flex-end; /* 삭제 버튼만 있으므로 오른쪽 정렬로 변경 */
+        }
+
+        .card-buttons form {
+            margin: 0;
+            display: inline-block;
+        }
+
+        .card-buttons button {
+            background-color: var(--christmas-green);
+            color: var(--snow-white);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .card-buttons button:hover {
+            background-color: #0f4526;
+        }
+
+        .card-buttons input[type="password"] {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
 
         .card img {
@@ -82,7 +122,7 @@
         }
 
         .festive-border {
-            border: 2px solid var(--christmas-green);  /* 여기를 초록색으로 변경 */
+            border: 2px solid var(--christmas-green);
             border-radius: 15px;
             padding: 20px;
             background-color: rgba(255, 255, 255, 0.9);
@@ -97,17 +137,54 @@
 
     <div class="cards-container">
         {% for card in cards %}
-        <div class="card">
-            {% if card.image_path %}
-            <img src="{{ url_for('static', filename=card.image_path) }}" alt="카드 이미지">
-            {% endif %}
-            <div class="card-author">From: {{ card.author }}</div>
-            <div class="card-message">{{ card.message }}</div>
-            <div class="card-date">{{ card.created_at.strftime('%Y-%m-%d %H:%M') }}</div>
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="card-title mb-0">{{ card.author }}</h5>
+            <p class="text-muted mb-0">{{ card.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
         </div>
-        {% endfor %}
-    </div>
-</body>
-</html>
+        <hr class="my-2">
+        <p class="card-text">{{ card.message }}</p>
+        {% if card.image_path %}
+        <img src="{{ url_for('static', filename=card.image_path) }}" class="img-fluid mb-3">
+        {% endif %}
+        
+        <!-- 카드 삭제 폼 -->
+        <form action="{{ url_for('delete_card', card_id=card.id) }}" method="POST" class="mb-3">
+            <input type="password" name="password" placeholder="비밀번호" required>
+            <button type="submit" class="btn btn-danger btn-sm">삭제</button>
+        </form>
 
-Version 2 of 2
+        <!-- 댓글 목록 -->
+        <div class="comments mt-3">
+            <h6>댓글</h6>
+            {% for comment in card.comments %}
+            <div class="comment mb-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <strong>{{ comment.author }}</strong>
+                        <div class="mx-2">|</div>
+                        <p class="mb-0">{{ comment.content }}</p>
+                    </div>
+                    <small class="text-muted">{{ comment.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                </div>
+                <form action="{{ url_for('delete_comment', comment_id=comment.id) }}" method="POST" class="mt-1 mb-2">
+                    <input type="password" name="comment_password" placeholder="비밀번호" required>
+                    <button type="submit" class="btn btn-danger btn-sm">댓글 삭제</button>
+                </form>
+            </div>
+            {% endfor %}
+
+            <!-- 댓글 작성 폼 -->
+            <form action="{{ url_for('add_comment', card_id=card.id) }}" method="POST">
+                <div class="form-group">
+                    <input type="text" name="comment_author" placeholder="작성자" class="form-control mb-2" required>
+                    <textarea name="comment_content" placeholder="댓글 내용" class="form-control mb-2" required></textarea>
+                    <input type="password" name="comment_password" placeholder="비밀번호" class="form-control mb-2" required>
+                    <button type="submit" class="btn btn-primary btn-sm">댓글 작성</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
